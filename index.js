@@ -2,14 +2,24 @@ const express = require('express');
 const { MongoClient } = require('mongodb');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const path = require('path');
 
 // MongoDB Atlas connection string
 const uri = "mongodb+srv://adiwaghmare856a:dvtdAmrE8iswJsxo@cluster0.tu1zi.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 
 // Initialize express
 const app = express();
-app.use(cors());
+
+// Enable CORS for all origins (for testing purposes) or specify your frontend URL
+app.use(cors({ origin: '*' }));  // Replace '*' with specific origins in production
+
+// Body parser middleware to handle JSON requests
 app.use(bodyParser.json());
+
+// Serve the index.html file directly from the current directory
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
+});
 
 // Handle signup POST request
 app.post('/signup', async (req, res) => {
